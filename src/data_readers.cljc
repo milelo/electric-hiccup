@@ -1,1 +1,1 @@
-{electric-hiccup/$< electric-hiccup.reader/read-data}
+{electric-hiccup electric-hiccup.reader/read-data}
