@@ -71,6 +71,9 @@ Source: [biff-electric] - [app.cljc]
 
 ### Equivalent sample code making use of `electric-hiccup` syntax
 
+This source is from a fork of [biff-electric] modified to use `electric-hiccup`:
+* [biff-electric-hiccup] - [app.cljs (electric-hiccup)]
+
 ```clojure
 (ns app
   (:require [hyperfiddle.electric :as e]
@@ -210,7 +213,9 @@ You can however define an alternative short-form name for your project:
 * Don't forget, in order to use the tags, require [hyperfiddle.electric-dom2] and [electric-hiccup.reader].
 
 [biff-electric]: https://github.com/jacobobryant/biff-electric
+[biff-electric-hiccup]: https://github.com/milelo/biff-electric-hiccup
 [app.cljc]: https://github.com/jacobobryant/biff-electric/blob/master/src/com/biffweb/examples/electric/app.cljc
+[app.cljs (electric-hiccup)]: https://github.com/milelo/biff-electric-hiccup/blob/master/src/com/biffweb/examples/electric/app.cljc
 [hiccup]: https://github.com/weavejester/hiccup
 [hiccup-wiki]: https://github.com/weavejester/hiccup/wiki
 [hiccup-api]: http://weavejester.github.io/hiccup
