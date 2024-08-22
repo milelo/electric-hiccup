@@ -1,7 +1,6 @@
 # electric-hiccup
 
 [![Clojars][clojars-badge]][clojars]
-![Status][status-badge]
 
 `electric-hiccup` provides hiccup-like syntactic sugar for [Electric V2][electric]. 
 
@@ -14,8 +13,11 @@ This is an **Alpha release**. Use at your own risk, there will likely be breakin
 ## Installation
 
 Add the following dependency to your `deps.edn` file:
-
-    milelo/electric-hiccup {:mvn/version "TBD"}
+```clojure
+    milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
+                            :git/tag "v0.1.0-alpha"}
+```
+                                  
 
 ## Usage
 
@@ -197,17 +199,14 @@ Include nested `electric-hiccup` in `(expression2)` with `#electric-hiccup`.
 
 ### Using your own tagged-literal name
 
-tagged-literal's are global. By convention `#electric-hiccup` is namespaced to avoid conflict.
+Tagged-literal's are global. By convention `#electric-hiccup` is namespaced or in this case, is the namespace, to avoid potential conflicts.
 
 You can however define an alternative short-form name for your project:
 
 * Create or append to the file `data_readers.cljc` in the root of your source folder.
 * Append a new entry to the map: `{ehic electric-hiccup.reader/read-data}`
 * The `ehic` entry defines the tag `#ehic`
-* Don't forget to use the tags, require [hyperfiddle.electric-dom2] and [electric-hiccup.reader]
-
-
-## License
+* Don't forget, in order to use the tags, require [hyperfiddle.electric-dom2] and [electric-hiccup.reader].
 
 [biff-electric]: https://github.com/jacobobryant/biff-electric
 [app.cljc]: https://github.com/jacobobryant/biff-electric/blob/master/src/com/biffweb/examples/electric/app.cljc
