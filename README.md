@@ -22,7 +22,9 @@ Add the following dependency to your `deps.edn` file:
 
 ## Usage
 
-Require `[hyperfiddle.electric-dom2]` and `[electric-hiccup.reader]` to use the `#electric-hiccup` tagged-literal to prefix `electric-hiccup` vector expressions.
+Require `[hyperfiddle.electric-dom2]` and `[electric-hiccup.reader]`.
+
+Prefix `electric-hiccup` vector expressions with the `#electric-hiccup` tagged-literal.
 
 ### Sample code in regular electric syntax
 
