@@ -142,7 +142,7 @@ Expands to:
 
 ```clojure
 #electric-hiccup
-[:div#my-id.my-class1.my-class2 {:class [my-class3 my-class4]
+[:div#my-id.my-class1.my-class2 {:class [:my-class3 :my-class4]
                                  :id :my-id2 ;overridden by my-id
                                  :property1 :some-value
                                  :property2 (expression)}]
