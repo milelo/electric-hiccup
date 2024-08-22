@@ -1,0 +1,1 @@
+{electric-hiccup/$< electric-hiccup.reader/read-data}
