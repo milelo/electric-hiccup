@@ -14,8 +14,9 @@ This is an **Alpha release**. Use at your own risk, there will likely be breakin
 
 Add the following dependency to your `deps.edn` file:
 ```clojure
-    milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
-                            :git/tag "v0.1.0-alpha"}
+    milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup" 
+                            :git/tag "v0.1.0-alpha"
+                            :git/sha "18d05d7"}
 ```
                                   
 
