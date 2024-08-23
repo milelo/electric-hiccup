@@ -18,7 +18,7 @@
         p-classes (:class props)
         p-classes (cond
                     (vector? p-classes) (str/join " " (map name p-classes))
-                    (keyword? p-classes) (name p-classes)
+                    (keyword? p-classes) (str/replace (name p-classes) #"\." " ")
                     :else p-classes)
         classes (when classes (str/join " " (map name classes)))
         classes (when (or classes p-classes)
