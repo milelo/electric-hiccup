@@ -31,7 +31,7 @@
                         :else %) content)]
     (list* (-> (str "hyperfiddle.electric-dom2/" tag) symbol)
            (if props
-             (cons (when props `(hyperfiddle.electric-dom2/props ~props)) content)
+             (cons `(hyperfiddle.electric-dom2/props ~props) content)
              content))))
 
 (defn read-data [hiccup]
