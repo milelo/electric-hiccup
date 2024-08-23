@@ -4,15 +4,16 @@
 
 (defn- parse-hiccup-tag [tag-form]
   (assert (keyword? tag-form))
-  (let [[_ tag-name id classes] (re-matches #"([^#.]+)(?:#([^#.]+))?(?:\.([^.]+(?:\.[^.]+)*))?" (name tag-form))]
+  (let [[_ tag-name id classes] (re-matches #"^([^#.]+)(?:#([^#.]+))?(?:\.([^.]+(?:\.[^.]+)*))?$" (name tag-form))]
     {:tag tag-name
      :id id
-     :classes (when classes (clojure.string/split classes #"\."))}))
+     :classes (when classes (str/replace classes #"\." " "))}))
 
 (defmacro $< [hiccup]
   (assert (vector? hiccup))
   (let [[tag-form & attrs-and-content] hiccup
         {:keys [tag id classes]} (parse-hiccup-tag tag-form)
+        _ (assert tag "Invalid hiccup tag")
         props (let [p (first attrs-and-content)] (when (map? p) p))
         content (if props (rest attrs-and-content) attrs-and-content)
         p-classes (:class props)
@@ -20,7 +21,6 @@
                     (vector? p-classes) (str/join " " (map name p-classes))
                     (keyword? p-classes) (str/replace (name p-classes) #"\." " ")
                     :else p-classes)
-        classes (when classes (str/join " " (map name classes)))
         classes (when (or classes p-classes)
                   (str/join " " (filter identity [classes p-classes])))
         props (if classes (assoc props :class classes) props)
