@@ -8,15 +8,15 @@ It allows dom elements supported by `hyperfiddle.electric-dom2` to be expressed 
 
 The `electric-hiccup` syntax can be intermingled with regular electric syntax.
 
-This is an **Alpha release**. Use at your own risk, there will likely be breaking changes.
+This is an **Alpha release**. Use at your own risk.
 
 ## Installation
 
 Add the following dependency to your `deps.edn` file:
 ```clojure
-    milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup" 
-                            :git/tag "v0.1.0-alpha"
-                            :git/sha "18d05d7"}
+        milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
+                                :git/tag "v0.1.1-alpha"
+                                :git/sha "28573b8"}
 ```
                                   
 
