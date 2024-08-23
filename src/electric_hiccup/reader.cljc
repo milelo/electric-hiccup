@@ -16,13 +16,13 @@
         props (let [p (first attrs-and-content)] (when (map? p) p))
         content (if props (rest attrs-and-content) attrs-and-content)
         p-classes (:class props)
-        p-classes (if (vector? p-classes)
-                    (str/join " " (map name p-classes))
-                    p-classes)
+        p-classes (cond
+                    (vector? p-classes) (str/join " " (map name p-classes))
+                    (keyword? p-classes) (name p-classes)
+                    :else p-classes)
         classes (when classes (str/join " " (map name classes)))
         classes (when (or classes p-classes)
                   (str/join " " (filter identity [classes p-classes])))
-        ;to-do verify tag classes ordered first
         props (if classes (assoc props :class classes) props)
         props (if id (assoc props :id id) props)
         content (map #(cond
