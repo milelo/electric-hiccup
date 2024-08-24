@@ -18,7 +18,7 @@ Add the following dependency to your `deps.edn` file:
 ```clojure
         milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
                                 :git/tag "v0.2.0-alpha"
-                                :git/sha TBD}
+                                :git/sha "537ec9d"}
 ```
                                   
 
@@ -172,7 +172,7 @@ These formats are supported when specified either literally or returned from a f
 
 Note: These formats aren't all supported directly by `hyperfiddle.electric-dom2/props`
 
-#### Runtime merging or tag keyword classes
+#### Runtime merging of tag keyword classes
 
 If :class is a function call, it is joined with the classes from the tag keyword at runtime.
 
