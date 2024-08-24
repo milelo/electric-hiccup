@@ -158,6 +158,39 @@ Expands to:
    :property1 :some-value,
    :property2 (expression)}))
 ```
+
+The class attribute value, supports the following forms:
+
+* "class1 class2"
+* :class1.class2
+* ["class1" "class2"]
+* [:class1 :class2]
+
+These formats are supported when specified either literally or returned from a function.
+
+Note: These formats aren't all supported directly by `hyperfiddle.electric-dom2/props`
+
+#### Runtime merging or tag keyword classes
+
+If :class is a function call, it is joined with the classes from the tag keyword at runtime.
+
+```clojure
+#electric-hiccup
+[:div.class1 {:class (get-classes :my-key)}]
+```
+
+Expands to:
+
+```clojure
+(hyperfiddle.electric-dom2/div
+ (hyperfiddle.electric-dom2/props
+  {:class
+   (clojure.core/str
+    "class1"
+    " "
+    (hiccup/classes>str (get-classes :my-key)))}))
+```
+
 #### Content goes after the optional attributes
 
 Supported content types:

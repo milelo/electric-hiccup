@@ -9,6 +9,12 @@
      :id id
      :classes (when classes (str/replace classes #"\." " "))}))
 
+(defn- classes>str [classes]
+  (cond
+    (string? classes) classes
+    (vector? classes) (str/join " " (map name classes))
+    (keyword? classes) (str/replace (name classes) #"\." " ")))
+
 (defmacro $< [hiccup]
   (assert (vector? hiccup))
   (let [[tag-form & attrs-and-content] hiccup
@@ -17,12 +23,16 @@
         props (let [p (first attrs-and-content)] (when (map? p) p))
         content (if props (rest attrs-and-content) attrs-and-content)
         p-classes (:class props)
-        p-classes (cond
-                    (vector? p-classes) (str/join " " (map name p-classes))
-                    (keyword? p-classes) (str/replace (name p-classes) #"\." " ")
-                    :else p-classes)
-        classes (when (or classes p-classes)
-                  (str/join " " (filter identity [classes p-classes])))
+        ;if p-classes is a literal, ensure its a string
+        p-classes (or (classes>str p-classes) p-classes)
+        ;join classes and p-classes at compile or runtime as required
+        classes (cond
+                  (and (not p-classes) (not classes)) nil
+                  (and (not p-classes) classes) classes
+                  (and (string? p-classes) (not classes)) p-classes
+                  (and (string? p-classes) classes) (str classes " " p-classes)
+                  (and p-classes classes) `(str ~classes " " (classes>str ~p-classes))
+                  :else `(classes>str ~p-classes))
         props (if classes (assoc props :class classes) props)
         props (if id (assoc props :id id) props)
         content (map #(cond
