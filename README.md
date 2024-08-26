@@ -18,7 +18,7 @@ Add the following dependency to your `deps.edn` file:
 ```clojure
         milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
                                 :git/tag "v0.2.1-alpha"
-                                :git/sha TBD}
+                                :git/sha "78fee86"}
 ```
                                   
 
