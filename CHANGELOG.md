@@ -17,7 +17,7 @@ Enhancements:
 * Support property :class values in the form :my-class1.my-class2 #2
 * Support runtime expressions as class property value #4
 
-## :git/tag "v0.2.1-alpha" :git/sha TBD
+## :git/tag "v0.2.1-alpha" :git/sha "78fee86"
 
 Enhancements:
 
