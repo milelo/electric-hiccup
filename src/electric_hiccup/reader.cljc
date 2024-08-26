@@ -26,6 +26,7 @@
         ;if p-classes is a literal, ensure its a string
         p-classes (or (classes>str p-classes) p-classes)
         ;join classes and p-classes at compile or runtime as required
+        ;p-classes take precedence
         classes (cond
                   (and (not p-classes) (not classes)) nil
                   (and (not p-classes) classes) classes
@@ -34,7 +35,8 @@
                   (and p-classes classes) `(str ~classes " " (classes>str ~p-classes))
                   :else `(classes>str ~p-classes))
         props (if classes (assoc props :class classes) props)
-        props (if id (assoc props :id id) props)
+        ;props id takes precedence
+        props (if (and id (not (:id props))) (assoc props :id id) props)
         content (map #(cond
                         (vector? %) `($< ~%)
                         (string? %) `(hyperfiddle.electric-dom2/text ~%)
