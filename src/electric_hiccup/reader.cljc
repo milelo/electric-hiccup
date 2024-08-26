@@ -15,6 +15,11 @@
     (vector? classes) (str/join " " (map name classes))
     (keyword? classes) (str/replace (name classes) #"\." " ")))
 
+(defn- seq-classes>str [classes]
+  (if (sequential? classes) 
+    (-> classes vec classes>str)
+    (classes>str classes)))
+
 (defmacro $< [hiccup]
   (assert (vector? hiccup))
   (let [[tag-form & attrs-and-content] hiccup
@@ -32,8 +37,8 @@
                   (and (not p-classes) classes) classes
                   (and (string? p-classes) (not classes)) p-classes
                   (and (string? p-classes) classes) (str classes " " p-classes)
-                  (and p-classes classes) `(str ~classes " " (classes>str ~p-classes))
-                  :else `(classes>str ~p-classes))
+                  (and p-classes classes) `(str ~classes " " (seq-classes>str ~p-classes))
+                  :else `(seq-classes>str ~p-classes))
         props (if classes (assoc props :class classes) props)
         ;props id takes precedence
         props (if (and id (not (:id props))) (assoc props :id id) props)
