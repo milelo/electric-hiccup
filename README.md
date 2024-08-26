@@ -17,8 +17,8 @@ Please raise GitHub Issues on the project to report problems, limitations experi
 Add the following dependency to your `deps.edn` file:
 ```clojure
         milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
-                                :git/tag "v0.2.0-alpha"
-                                :git/sha "537ec9d"}
+                                :git/tag "v0.2.1-alpha"
+                                :git/sha TBD}
 ```
                                   
 
@@ -145,7 +145,7 @@ Expands to:
 ```clojure
 #electric-hiccup
 [:div#my-id.my-class1.my-class2 {:class [:my-class3 :my-class4]
-                                 :id :my-id2 ;overridden by my-id
+                                 :id :my-id2 ;overrides my-id
                                  :property1 :some-value
                                  :property2 (expression)}]
 ```
@@ -156,7 +156,7 @@ Expands to:
 (hyperfiddle.electric-dom2/div
  (hyperfiddle.electric-dom2/props
   {:class "my-class1 my-class2 my-class3 my-class4",
-   :id "my-id",
+   :id "my-id2",
    :property1 :some-value,
    :property2 (expression)}))
 ```
@@ -190,7 +190,7 @@ Expands to:
    (clojure.core/str
     "class1"
     " "
-    (hiccup/classes>str (get-classes :my-key)))}))
+    (hiccup/seq-classes>str (get-classes :my-key)))}))
 ```
 
 #### Content goes after the optional attributes
