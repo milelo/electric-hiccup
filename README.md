@@ -29,10 +29,10 @@ Require `[hyperfiddle.electric-dom2]` (or equivalent package) and `[electric-hic
 
 Prefix `electric-hiccup` vector expressions with the `#electric-hiccup` tagged-literal.
 
-Optionally override the `hyperfiddle.electric-dom2` electric dom package name using the `electric-hiccup.reader/*electric-dom-pkg*` dynamic var
+Optionally override the `hyperfiddle.electric-dom2` electric dom package name using the `electric-hiccup.reader/*electric-dom-pkg*` dynamic var:
 ```clojure
 (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
-  (code-with-#electric-hiccup-tags)
+  (thread-with-#electric-hiccup-tags)
   )
 ```
 
@@ -99,7 +99,7 @@ This source is from a fork of [biff-electric] modified to use `electric-hiccup`:
     [:label.block {:for :bar} "Bar: "
      [:span.font-mono
       (dom/text (e/server (pr-str (:user/bar user))))]]
-    [:div.h-1]
+    [:.h-1] ;tag defaults to "div"
     (let [bar (e/server (:user/bar user))
           text (atom bar)]
        #electric-hiccup
@@ -110,7 +110,7 @@ This source is from a fork of [biff-electric] modified to use `electric-hiccup`:
          (dom/on "keydown" (e/fn [e]
                              (when (= "Enter" (.-key e))
                                (SetBar. (or @text "")))))]
-        [:div.w-3]
+        [:.w-3]
         [:button.btn {:type :Submit} "Update"
          (dom/on "click" (e/fn [_e]
                            (SetBar. (or @text ""))))]])
