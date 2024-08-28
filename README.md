@@ -2,11 +2,13 @@
 
 [![Clojars][clojars-badge]][clojars]
 
-`electric-hiccup` provides hiccup-like syntactic sugar for [Electric V2][electric]. 
+`electric-hiccup` provides hiccup-like syntactic sugar for [Electric][electric]. 
 
-It allows dom elements supported by `hyperfiddle.electric-dom2` to be expressed as `electric-hiccup`. For non-trivial layouts this can simplify authoring and improve readability.
+It allows dom elements supported by the hyperfiddle.electric-dom packages to be expressed as `electric-hiccup`. For non-trivial layouts this can simplify authoring and improve readability.
 
 The `electric-hiccup` syntax can be intermingled with regular electric syntax.
+
+`hyperfiddle.electric-dom2`is supported by default but this can be configured.
 
 This is an **Alpha release**.
 
@@ -17,16 +19,22 @@ Please raise GitHub Issues on the project to report problems, limitations experi
 Add the following dependency to your `deps.edn` file:
 ```clojure
         milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
-                                :git/tag "v0.2.1-alpha"
-                                :git/sha "78fee86"}
+                                :git/tag "v0.3.0-alpha"
+                                :git/sha TBD}
 ```
-                                  
 
 ## Usage
 
-Require `[hyperfiddle.electric-dom2]` and `[electric-hiccup.reader]`.
+Require `[hyperfiddle.electric-dom2]` (or equivalent package) and `[electric-hiccup.reader]`.
 
 Prefix `electric-hiccup` vector expressions with the `#electric-hiccup` tagged-literal.
+
+Optionally override the `hyperfiddle.electric-dom2` electric dom package name using the `electric-hiccup.reader/*electric-dom-pkg*` dynamic var
+```clojure
+(binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
+  (code-with-#electric-hiccup-tags)
+  )
+```
 
 ### Sample code in regular electric syntax
 
@@ -139,6 +147,8 @@ Expands to:
  (hyperfiddle.electric-dom2/props
   {:class "my-class1 my-class2", :id "my-id"}))
 ```
+
+If the tag is omitted `[:#my-id.my-class1.my-class2]` it will default to a "div" although an id or class is required to make a valid keyword.
 
 #### Optional attributes are specified as a map
 

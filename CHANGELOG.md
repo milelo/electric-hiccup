@@ -26,3 +26,10 @@ Enhancements:
 Bugs:
 
 * The ID defined in the properties should take precedence over that on the tag #6
+
+## :git/tag "v0.3.0-alpha" :git/sha TBD
+
+Enhancements:
+
+* Add support for [:.h-1] as supported by hiccup #7
+* Allow the package dependency on electric to be configured. #8
