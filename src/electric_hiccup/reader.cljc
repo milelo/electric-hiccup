@@ -2,10 +2,16 @@
   (:require
    [clojure.string :as str]))
 
+(def ^:dynamic *electric-dom-pkg* "hyperfiddle.electric-dom2")
+
+(def ^:private dom-symbol (memoize (fn [pkg symbol-name]
+                                     (symbol (str (name pkg) "/" (name symbol-name))))))
+
 (defn- parse-hiccup-tag [tag-form]
   (assert (keyword? tag-form))
-  (let [[_ tag-name id classes] (re-matches #"^([^#.]+)(?:#([^#.]+))?(?:\.([^.]+(?:\.[^.]+)*))?$" (name tag-form))]
-    {:tag tag-name
+  (let [[_ tag-name id classes] (re-matches #"^([^\s#.]+)?(?:#([^\s.]+))?(?:\.([^\s#]+))?$" (name tag-form))]
+    (assert (or tag-name id classes) "Invalid hiccup tag")
+    {:tag (or tag-name "div")
      :id id
      :classes (when classes (str/replace classes #"\." " "))}))
 
@@ -16,7 +22,7 @@
     (keyword? classes) (str/replace (name classes) #"\." " ")))
 
 (defn- seq-classes>str [classes]
-  (if (sequential? classes) 
+  (if (sequential? classes)
     (-> classes vec classes>str)
     (classes>str classes)))
 
@@ -24,7 +30,6 @@
   (assert (vector? hiccup))
   (let [[tag-form & attrs-and-content] hiccup
         {:keys [tag id classes]} (parse-hiccup-tag tag-form)
-        _ (assert tag "Invalid hiccup tag")
         props (let [p (first attrs-and-content)] (when (map? p) p))
         content (if props (rest attrs-and-content) attrs-and-content)
         p-classes (:class props)
@@ -44,11 +49,11 @@
         props (if (and id (not (:id props))) (assoc props :id id) props)
         content (map #(cond
                         (vector? %) `($< ~%)
-                        (string? %) `(hyperfiddle.electric-dom2/text ~%)
+                        (string? %) `(~(dom-symbol *electric-dom-pkg* 'text) ~%)
                         :else %) content)]
-    (list* (-> (str "hyperfiddle.electric-dom2/" tag) symbol)
+    (list* (dom-symbol *electric-dom-pkg* tag)
            (if props
-             (cons `(hyperfiddle.electric-dom2/props ~props) content)
+             (cons `(~(dom-symbol *electric-dom-pkg* 'props) ~props) content)
              content))))
 
 (defn read-data [hiccup]
