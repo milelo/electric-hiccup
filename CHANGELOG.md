@@ -27,7 +27,7 @@ Bugs:
 
 * The ID defined in the properties should take precedence over that on the tag #6
 
-## :git/tag "v0.3.0-alpha" :git/sha TBD
+## :git/tag "v0.3.0-alpha" :git/sha "650c9e3"
 
 Enhancements:
 
