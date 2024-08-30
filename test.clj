@@ -1,3 +1,4 @@
+;bb tests.clj
 (ns test
   (:require
    [electric-hiccup.reader :refer [$<]]
@@ -25,6 +26,11 @@
                                 (SetBar. (or @text ""))))]
             '[:div.c1 {:class "c2 c3"}]
             '[:div {:class [:c1 :c2]}]
+            '[:div {:class ["c1" "c2"]}]
+            '[:div {:class :c1.c2}] 
+            '[:div.c0 {:class [:c1 :c2]}]
+            '[:div.c0 {:class ["c1" "c2"]}]
+            '[:div.c0 {:class :c1.c2}]
             '[:div.flex]
             '[:input#bar2.w-full {:type :text :value bar}
               (dom/on "keyup" (e/fn [e]
@@ -64,7 +70,7 @@
             '[:div#id.c1.c2 "Hello" [:div [:div (dom/text "text")]]]
             '[:DIV#Id.c1.C2 "Hello" [:div]]])
 
-(def ref
+(def recorded
   '({:in [:div], :out (hyperfiddle.electric-dom3/div)}
     {:in [:div#id1 {:id id2}],
      :out
@@ -105,6 +111,26 @@
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
+    {:in [:div {:class ["c1" "c2"]}],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
+    {:in [:div {:class :c1.c2}],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
+    {:in [:div.c0 {:class [:c1 :c2]}],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c0 c1 c2"}))}
+    {:in [:div.c0 {:class ["c1" "c2"]}],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c0 c1 c2"}))}
+    {:in [:div.c0 {:class :c1.c2}],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c0 c1 c2"}))}
     {:in [:div.flex],
      :out
      (hyperfiddle.electric-dom3/div
@@ -266,7 +292,7 @@
             (let [r (expand in)]
               (if (= out r)
                 "Pass"
-                {:result "Fail" :in in :ref out :out r}))) ref))))
+                {:result "Fail" :in in :ref out :out r}))) recorded))))
 
 ;(record)
 (test)
