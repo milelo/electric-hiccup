@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]))
 
-(def ^:dynamic *electric-dom-pkg* "hyperfiddle.electric-dom2")
+(def ^:dynamic *electric-dom-pkg* 'hyperfiddle.electric-dom2)
 
 (def ^:private dom-symbol (memoize (fn [pkg symbol-name]
                                      (symbol (str (name pkg) "/" (name symbol-name))))))
@@ -10,7 +10,7 @@
 (defn- parse-hiccup-tag [tag-form]
   (assert (keyword? tag-form))
   (let [[_ tag-name id classes] (re-matches #"^([^\s#.]+)?(?:#([^\s.]+))?(?:\.([^\s#]+))?$" (name tag-form))]
-    (assert (or tag-name id classes) "Invalid hiccup tag")
+    (assert (or tag-name id classes) (str "Invalid hiccup tag-form: " tag-form))
     {:tag (or tag-name "div")
      :id id
      :classes (when classes (str/replace classes #"\." " "))}))
@@ -26,7 +26,9 @@
     (-> classes vec classes>str)
     (classes>str classes)))
 
-(defmacro $< [hiccup]
+(defmacro $<
+  "Transform hiccup into hyperfiddle.electric form"
+  [hiccup]
   (assert (vector? hiccup))
   (let [[tag-form & attrs-and-content] hiccup
         {:keys [tag id classes]} (parse-hiccup-tag tag-form)
