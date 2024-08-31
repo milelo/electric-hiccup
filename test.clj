@@ -24,6 +24,11 @@
      (prn "Hello")
      "Sign out"]
     [:div#id]
+    [:#id]
+    [:.c1.c2]
+    [:#id.c1]
+    [:.#id.c1]
+    [:.c1#id]
     [:button.btn {:type :Submit}
      "Update"
      (dom/on "click" (e/fn [e]
@@ -36,12 +41,6 @@
     [:div.c0 {:class ["c1" "c2"]}]
     [:div.c0 {:class :c1.c2}]
     [:div.flex]
-    [:input#bar2.w-full {:type :text :value bar}
-     (dom/on "keyup" (e/fn [e]
-                       (reset! text (-> e .-target .-value))))
-     (dom/on "keydown" (e/fn [e]
-                         (when (= "Enter" (.-key e))
-                           (SetBar. (or @text "")))))]
     [:div.flex
      [:div "flex-div"]
      [:input#bar.w-full {:type :text :value bar}
@@ -55,13 +54,9 @@
       (dom/on "click" (e/fn [_e]
                         (SetBar. (or @text ""))))]]
     [:div#my-id.my-class1.my-class2]
-    [:div#my-id.my-class1.my-class2 {:class [my-class3 my-class4]
-                                     :id :my-id2 ;overridden
-                                     :property1 :some-value
-                                     :property2 (expression)}]
     [:div.my-class [:div] "Hello world" (expression)]
     [:div#my-id.my-class1.my-class2 {:class [:my-class3 :my-class4]
-                                     :id :my-id2 ;overridden by my-id
+                                     :id :my-id2 ;override my-id
                                      :property1 :some-value
                                      :property2 (expression)}]
     [:div {:class :my-class.my-class2}]
@@ -83,7 +78,7 @@
   ])
 
 (def recorded
-  '({:in [:div], :out (hyperfiddle.electric-dom3/div)}
+  '[{:in [:div], :out (hyperfiddle.electric-dom3/div)}
     {:in [:div#id1 {:id id2}],
      :out
      (hyperfiddle.electric-dom3/div
@@ -105,6 +100,24 @@
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:id "id"}))}
+    {:in [:#id],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:id "id"}))}
+    {:in [:.c1.c2],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
+    {:in [:#id.c1],
+     :out
+     (hyperfiddle.electric-dom3/div
+      (hyperfiddle.electric-dom3/props {:class "c1", :id "id"}))}
+    {:in [:.#id.c1],
+     :out
+     "Assert failed: Invalid hiccup tag-form: :.#id.c1\n(or tag-name id classes)"}
+    {:in [:.c1#id],
+     :out
+     "Assert failed: Invalid hiccup tag-form: :.c1#id\n(or tag-name id classes)"}
     {:in
      [:button.btn
       {:type :Submit}
@@ -148,21 +161,6 @@
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "flex"}))}
     {:in
-     [:input#bar2.w-full
-      {:type :text, :value bar}
-      (dom/on "keyup" (e/fn [e] (reset! text (-> e .-target .-value))))
-      (dom/on
-       "keydown"
-       (e/fn [e] (when (= "Enter" (.-key e)) (SetBar. (or @text "")))))],
-     :out
-     (hyperfiddle.electric-dom3/input
-      (hyperfiddle.electric-dom3/props
-       {:type :text, :value bar, :class "w-full", :id "bar2"})
-      (dom/on "keyup" (e/fn [e] (reset! text (-> e .-target .-value))))
-      (dom/on
-       "keydown"
-       (e/fn [e] (when (= "Enter" (.-key e)) (SetBar. (or @text ""))))))}
-    {:in
      [:div.flex
       [:div "flex-div"]
       [:input#bar.w-full
@@ -199,19 +197,6 @@
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props
        {:class "my-class1 my-class2", :id "my-id"}))}
-    {:in
-     [:div#my-id.my-class1.my-class2
-      {:class [my-class3 my-class4],
-       :id :my-id2,
-       :property1 :some-value,
-       :property2 (expression)}],
-     :out
-     (hyperfiddle.electric-dom3/div
-      (hyperfiddle.electric-dom3/props
-       {:class "my-class1 my-class2 my-class3 my-class4",
-        :id :my-id2,
-        :property1 :some-value,
-        :property2 (expression)}))}
     {:in [:div.my-class [:div] "Hello world" (expression)],
      :out
      (hyperfiddle.electric-dom3/div
@@ -312,11 +297,11 @@
     {:in [:div##id],
      :out
      (hyperfiddle.electric-dom3/div
-      (hyperfiddle.electric-dom3/props {:id "#id"}))}))
+      (hyperfiddle.electric-dom3/props {:id "#id"}))}])
 
 (defn record []
   (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
-    (pprint (map (fn [v] {:in v :out (expand v)}) tests))))
+    (pprint (mapv (fn [v] {:in v :out (expand v)}) tests))))
 
 (defn test []
   (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
