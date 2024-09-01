@@ -59,6 +59,8 @@
                                      :id :my-id2 ;override my-id
                                      :property1 :some-value
                                      :property2 (expression)}]
+    [:button.text-blue-500.hover:text-blue-800 ;mid keyword ":" is accepted
+     {:type :submit} "Sign out"]
     [:div {:class :my-class.my-class2}]
     [:div {:class (str "a" "-b")}]
     [:div.x {:class (str "a" "-b")}]
@@ -69,13 +71,15 @@
     [:div#id.c1.c2 "Hello" [:div [:div (dom/text "text")]]]
     [:div.c#id]
     (str)
-                 ;To do: catch these source errors:
-    [:DIV#Id.c1.C2 "Hello" [:div]] ;make tag lower case.
+    [:DIV#Id.c1.C2 "Hello" [:div]] ;make tag lower case?
     [:div..c]
     [:..]
     [:div#id..c]
     [:div##id] 
-  ])
+    []
+    ["div"]
+    ['div]
+    ])
 
 (def recorded
   '[{:in [:div], :out (hyperfiddle.electric-dom3/div)}
@@ -113,11 +117,9 @@
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1", :id "id"}))}
     {:in [:.#id.c1],
-     :out
-     "Assert failed: Invalid hiccup tag-form: :.#id.c1\n(or tag-name id classes)"}
+     :out "Assert failed: Invalid hiccup tag-form: :.#id.c1\nvalid"}
     {:in [:.c1#id],
-     :out
-     "Assert failed: Invalid hiccup tag-form: :.c1#id\n(or tag-name id classes)"}
+     :out "Assert failed: Invalid hiccup tag-form: :.c1#id\nvalid"}
     {:in
      [:button.btn
       {:type :Submit}
@@ -217,6 +219,15 @@
         :id :my-id2,
         :property1 :some-value,
         :property2 (expression)}))}
+    {:in
+     [:button.text-blue-500.hover:text-blue-800
+      {:type :submit}
+      "Sign out"],
+     :out
+     (hyperfiddle.electric-dom3/button
+      (hyperfiddle.electric-dom3/props
+       {:type :submit, :class "text-blue-500 hover:text-blue-800"})
+      (hyperfiddle.electric-dom3/text "Sign out"))}
     {:in [:div {:class :my-class.my-class2}],
      :out
      (hyperfiddle.electric-dom3/div
@@ -273,8 +284,7 @@
       (hyperfiddle.electric-dom3/div
        (hyperfiddle.electric-dom3/div (dom/text "text"))))}
     {:in [:div.c#id],
-     :out
-     "Assert failed: Invalid hiccup tag-form: :div.c#id\n(or tag-name id classes)"}
+     :out "Assert failed: Invalid hiccup tag-form: :div.c#id\nvalid"}
     {:in (str), :out "Assert failed: (vector? hiccup)"}
     {:in [:DIV#Id.c1.C2 "Hello" [:div]],
      :out
@@ -283,21 +293,15 @@
       (hyperfiddle.electric-dom3/text "Hello")
       (hyperfiddle.electric-dom3/div))}
     {:in [:div..c],
-     :out
-     (hyperfiddle.electric-dom3/div
-      (hyperfiddle.electric-dom3/props {:class " c"}))}
-    {:in [:..],
-     :out
-     (hyperfiddle.electric-dom3/div
-      (hyperfiddle.electric-dom3/props {:class " "}))}
+     :out "Assert failed: Invalid hiccup tag-form: :div..c\nvalid"}
+    {:in [:..], :out "Assert failed: Invalid hiccup tag-form: :..\nvalid"}
     {:in [:div#id..c],
-     :out
-     (hyperfiddle.electric-dom3/div
-      (hyperfiddle.electric-dom3/props {:class " c", :id "id"}))}
+     :out "Assert failed: Invalid hiccup tag-form: :div#id..c\nvalid"}
     {:in [:div##id],
-     :out
-     (hyperfiddle.electric-dom3/div
-      (hyperfiddle.electric-dom3/props {:id "#id"}))}])
+     :out "Assert failed: Invalid hiccup tag-form: :div##id\nvalid"}
+    {:in [], :out "Assert failed: (keyword? tag-form)"}
+    {:in ["div"], :out "Assert failed: (keyword? tag-form)"}
+    {:in ['div], :out "Assert failed: (keyword? tag-form)"}])
 
 (defn record []
   (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]

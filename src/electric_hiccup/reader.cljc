@@ -9,8 +9,8 @@
 
 (defn- parse-hiccup-tag [tag-form]
   (assert (keyword? tag-form))
-  (let [[_ tag-name id classes] (re-matches #"^([^\s#.]+)?(?:#([^\s.]+))?(?:\.([^\s#]+))?$" (name tag-form))]
-    (assert (or tag-name id classes) (str "Invalid hiccup tag-form: " tag-form))
+  (let [[valid tag-name id classes] (re-matches #"^([^#.]+)?(?:#([^#.]+))?(?:\.((?:[^#.]+\.)*[^#.]+))?$" (name tag-form))]
+    (assert valid (str "Invalid hiccup tag-form: " tag-form))
     {:tag (or tag-name "div")
      :id id
      :classes (when classes (str/replace classes #"\." " "))}))
