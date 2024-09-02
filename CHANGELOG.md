@@ -36,6 +36,8 @@ Enhancements:
 
 ## :git/tag "v0.4.0-alpha" :git/sha "f29103a"
 
+Enhancements:
+
 * Validate hiccup tag form for correct use of "#" and "." #12
 * Improve message for invalid hiccup tag #11
 * Add support for arbitrary electric namespaces #13
