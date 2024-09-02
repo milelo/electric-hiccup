@@ -2,12 +2,14 @@
   (:require
    [clojure.string :as str]))
 
-(def ^:dynamic *electric-dom-pkg* 'hyperfiddle.electric-dom2)
+(def ^:dynamic *electric-dom-pkg* nil)
 
-(defn- dom-symbol [ns symbol-name]
-  (symbol (if ns
-            (str (name ns) "/" (name symbol-name))
-            (name symbol-name))))
+(defn- dom-symbol [tag-ns symbol-name]
+  (let [symbol-ns (or
+                   tag-ns
+                   *electric-dom-pkg*
+                   'hyperfiddle.electric-dom2)]
+    (symbol (str (name symbol-ns) "/" (name symbol-name)))))
 
 (defn- parse-hiccup-tag [tag-form]
   (assert (keyword? tag-form))
@@ -54,11 +56,11 @@
         props (if (and id (not (:id props))) (assoc props :id id) props)
         content (map #(cond
                         (vector? %) `($< ~%)
-                        (string? %) `(~(dom-symbol *electric-dom-pkg* 'text) ~%)
+                        (string? %) `(~(dom-symbol nil 'text) ~%)
                         :else %) content)]
-    (list* (dom-symbol (or tag-ns *electric-dom-pkg*) tag)
+    (list* (dom-symbol tag-ns tag)
            (if props
-             (cons `(~(dom-symbol *electric-dom-pkg* 'props) ~props) content)
+             (cons `(~(dom-symbol nil 'props) ~props) content)
              content))))
 
 (defn read-data [hiccup]
