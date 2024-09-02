@@ -66,6 +66,15 @@
     [:div.x {:class (str "a" "-b")}]
     [:div.class1 {:class (get-classes :my-key)}]
     [:div.a {:class '(:b :c)} "list"]
+    [:svg/svg {:viewBox "0 0 300 100"}
+     [:svg/circle {:cx 50 :cy 50 :r (+ 30 offset)
+                   :style {:fill "#af7ac5 "}}]
+     [:svg/g {:transform
+              (str "translate(105,20) rotate(" (* 3 offset) ")")}
+      [:svg/polygon {:points "30,0 0,60 60,60"
+                     :style {:fill "#5499c7"}}]]
+     [:svg/rect {:x 200 :y 20 :width (+ 60 offset) :height (+ 60 offset)
+                 :style {:fill "#45b39d"}}]]
     [:div (when true [:div])]
     [:div#id.c1.c2 "Hello" [:div [:div "inner"]]]
     [:div#id.c1.c2 "Hello" [:div [:div (dom/text "text")]]]
@@ -266,6 +275,40 @@
          " "
          (electric-hiccup.reader/seq-classes>str '(:b :c)))})
       (hyperfiddle.electric-dom3/text "list"))}
+    {:in
+     [:svg/svg
+      {:viewBox "0 0 300 100"}
+      [:svg/circle
+       {:cx 50, :cy 50, :r (+ 30 offset), :style {:fill "#af7ac5 "}}]
+      [:svg/g
+       {:transform (str "translate(105,20) rotate(" (* 3 offset) ")")}
+       [:svg/polygon
+        {:points "30,0 0,60 60,60", :style {:fill "#5499c7"}}]]
+      [:svg/rect
+       {:x 200,
+        :y 20,
+        :width (+ 60 offset),
+        :height (+ 60 offset),
+        :style {:fill "#45b39d"}}]],
+     :out
+     (svg/svg
+      (hyperfiddle.electric-dom3/props {:viewBox "0 0 300 100"})
+      (svg/circle
+       (hyperfiddle.electric-dom3/props
+        {:cx 50, :cy 50, :r (+ 30 offset), :style {:fill "#af7ac5 "}}))
+      (svg/g
+       (hyperfiddle.electric-dom3/props
+        {:transform (str "translate(105,20) rotate(" (* 3 offset) ")")})
+       (svg/polygon
+        (hyperfiddle.electric-dom3/props
+         {:points "30,0 0,60 60,60", :style {:fill "#5499c7"}})))
+      (svg/rect
+       (hyperfiddle.electric-dom3/props
+        {:x 200,
+         :y 20,
+         :width (+ 60 offset),
+         :height (+ 60 offset),
+         :style {:fill "#45b39d"}})))}
     {:in [:div (when true [:div])],
      :out (hyperfiddle.electric-dom3/div (when true [:div]))}
     {:in [:div#id.c1.c2 "Hello" [:div [:div "inner"]]],

@@ -4,14 +4,17 @@
 
 (def ^:dynamic *electric-dom-pkg* 'hyperfiddle.electric-dom2)
 
-(def ^:private dom-symbol (memoize (fn [pkg symbol-name]
-                                     (symbol (str (name pkg) "/" (name symbol-name))))))
+(defn- dom-symbol [ns symbol-name]
+  (symbol (if ns
+            (str (name ns) "/" (name symbol-name))
+            (name symbol-name))))
 
 (defn- parse-hiccup-tag [tag-form]
   (assert (keyword? tag-form))
   (let [[valid tag-name id classes] (re-matches #"^([^#.]+)?(?:#([^#.]+))?(?:\.((?:[^#.]+\.)*[^#.]+))?$" (name tag-form))]
     (assert valid (str "Invalid hiccup tag-form: " tag-form))
-    {:tag (or tag-name "div")
+    {:ns (namespace tag-form)
+     :tag (or tag-name "div")
      :id id
      :classes (when classes (str/replace classes #"\." " "))}))
 
@@ -31,7 +34,7 @@
   [hiccup]
   (assert (vector? hiccup))
   (let [[tag-form & attrs-and-content] hiccup
-        {:keys [tag id classes]} (parse-hiccup-tag tag-form)
+        {:keys [ns tag id classes]} (parse-hiccup-tag tag-form)
         props (let [p (first attrs-and-content)] (when (map? p) p))
         content (if props (rest attrs-and-content) attrs-and-content)
         p-classes (:class props)
@@ -53,13 +56,10 @@
                         (vector? %) `($< ~%)
                         (string? %) `(~(dom-symbol *electric-dom-pkg* 'text) ~%)
                         :else %) content)]
-    (list* (dom-symbol *electric-dom-pkg* tag)
+    (list* (dom-symbol (or ns *electric-dom-pkg*) tag)
            (if props
              (cons `(~(dom-symbol *electric-dom-pkg* 'props) ~props) content)
              content))))
 
 (defn read-data [hiccup]
   `($< ~hiccup))
-
-
-
