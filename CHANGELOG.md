@@ -33,3 +33,9 @@ Enhancements:
 
 * Add support for [:.h-1] as supported by hiccup #7
 * Allow the package dependency on electric to be configured. #8
+
+## :git/tag "v0.4.0-alpha" :git/sha TBD
+
+* Validate hiccup tag form for correct use of "#" and "." #12
+* Improve message for invalid hiccup tag #11
+* Add support for arbitrary electric namespaces #13

@@ -19,22 +19,30 @@ Please raise GitHub Issues on the project to report problems, limitations experi
 Add the following dependency to your `deps.edn` file:
 ```clojure
         milelo/electric-hiccup {:git/url "https://github.com/milelo/electric-hiccup"
-                                :git/tag "v0.3.0-alpha"
-                                :git/sha "650c9e3"}
+                                :git/tag "v0.4.0-alpha"
+                                :git/sha TBD}
 ```
 
 ## Usage
 
-Require `[hyperfiddle.electric-dom2]` (or equivalent package) and `[electric-hiccup.reader]`.
+Require `[hyperfiddle.electric-dom2]` (or equivalent namespace) and `[electric-hiccup.reader]`.
 
 Prefix `electric-hiccup` vector expressions with the `#electric-hiccup` tagged-literal.
 
-Optionally override the `hyperfiddle.electric-dom2` electric dom package name using the `electric-hiccup.reader/*electric-dom-pkg*` dynamic var:
+Optionally override the `hyperfiddle.electric-dom2` electric dom namespace using the `electric-hiccup.reader/*electric-dom-pkg*` dynamic var:
 ```clojure
 (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
   (thread-with-#electric-hiccup-tags)
   )
 ```
+
+### Other namespaces
+
+The default namespace can be overridden by namespacing the electric-hiccup tag-form keywords. For example if you `require` `[hyperfiddle.electric-dom2 :as dom]` you can use the tag `[:dom/div.h1 "Foo"]` explicitly making use of `hyperfiddle.electric-dom2/div`.
+
+Similarly:
+
+`require` `[hyperfiddle.electric-svg :as svg]` to use `[:svg/svg {:viewBox "0 0 300 100"} ...]`
 
 ### Sample code in regular electric syntax
 
@@ -233,6 +241,33 @@ Expands to:
 
 Include nested `electric-hiccup` in `(expression2)` with `#electric-hiccup`.
 
+## Other namespaces
+
+You can use namespaced keywords as hiccup tag-forms. so for example require:
+
+```clojure
+ [hyperfiddle.electric-svg :as svg]
+```
+
+and prefix the keyword name with the namespace alias:
+
+```clojure
+#electric-hiccup
+[:svg/svg {:viewBox "0 0 300 100"}
+       [:svg/circle {:cx 50 :cy 50 :r (+ 30 offset)
+                     :style {:fill "#af7ac5 "}}]
+       [:svg/g {:transform
+                (str "translate(105,20) rotate(" (* 3 offset) ")")}
+        [:svg/polygon {:points "30,0 0,60 60,60"
+                       :style {:fill "#5499c7"}}]]
+       [:svg/rect {:x 200 :y 20 :width (+ 60 offset) :height (+ 60 offset)
+                   :style {:fill "#45b39d"}}]]
+```
+
+example source from [biff-electric-hiccup] - [app.cljs (electric-hiccup)]
+
+SVG example from: [electric-fiddle demo_svg.cljc]
+
 ## Alternative representations
 
 ### As a macro
@@ -267,6 +302,7 @@ You can however define an alternative short-form name for your project:
 [hiccup-wiki]: https://github.com/weavejester/hiccup/wiki
 [hiccup-api]: http://weavejester.github.io/hiccup
 [electric]: https://github.com/hyperfiddle/electric
+[electric-fiddle demo_svg.cljc]: https://github.com/hyperfiddle/electric-fiddle/blob/main/src/electric_tutorial/demo_svg.cljc
 
 [license]: #license
 
