@@ -66,6 +66,7 @@
     [:div.x {:class (str "a" "-b")}]
     [:div.class1 {:class (get-classes :my-key)}]
     [:div.a {:class '(:b :c)} "list"]
+    [:dom/.c]
     [:svg/svg {:viewBox "0 0 300 100"}
      [:svg/circle {:cx 50 :cy 50 :r (+ 30 offset)
                    :style {:fill "#af7ac5 "}}]
@@ -91,12 +92,12 @@
     ])
 
 (def recorded
-  '[{:in [:div], :out (hyperfiddle.electric-dom3/div)}
-    {:in [:div#id1 {:id id2}],
+  '[{:src [:div], :out (hyperfiddle.electric-dom3/div)}
+    {:src [:div#id1 {:id id2}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:id id2}))}
-    {:in
+    {:src
      [:div#id2.my-div
       {:p1 :p1-value, :class [:other-classes]}
       [:div]
@@ -109,27 +110,27 @@
       (hyperfiddle.electric-dom3/div)
       (prn "Hello")
       (hyperfiddle.electric-dom3/text "Sign out"))}
-    {:in [:div#id],
+    {:src [:div#id],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:id "id"}))}
-    {:in [:#id],
+    {:src [:#id],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:id "id"}))}
-    {:in [:.c1.c2],
+    {:src [:.c1.c2],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
-    {:in [:#id.c1],
+    {:src [:#id.c1],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1", :id "id"}))}
-    {:in [:.#id.c1],
+    {:src [:.#id.c1],
      :out "Assert failed: Invalid hiccup tag-form: :.#id.c1\nvalid"}
-    {:in [:.c1#id],
+    {:src [:.c1#id],
      :out "Assert failed: Invalid hiccup tag-form: :.c1#id\nvalid"}
-    {:in
+    {:src
      [:button.btn
       {:type :Submit}
       "Update"
@@ -139,39 +140,39 @@
       (hyperfiddle.electric-dom3/props {:type :Submit, :class "btn"})
       (hyperfiddle.electric-dom3/text "Update")
       (dom/on "click" (e/fn [e] (SetBar. (or @text "")))))}
-    {:in [:div.c1 {:class "c2 c3"}],
+    {:src [:div.c1 {:class "c2 c3"}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2 c3"}))}
-    {:in [:div {:class [:c1 :c2]}],
+    {:src [:div {:class [:c1 :c2]}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
-    {:in [:div {:class ["c1" "c2"]}],
+    {:src [:div {:class ["c1" "c2"]}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
-    {:in [:div {:class :c1.c2}],
+    {:src [:div {:class :c1.c2}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2"}))}
-    {:in [:div.c0 {:class [:c1 :c2]}],
+    {:src [:div.c0 {:class [:c1 :c2]}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c0 c1 c2"}))}
-    {:in [:div.c0 {:class ["c1" "c2"]}],
+    {:src [:div.c0 {:class ["c1" "c2"]}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c0 c1 c2"}))}
-    {:in [:div.c0 {:class :c1.c2}],
+    {:src [:div.c0 {:class :c1.c2}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c0 c1 c2"}))}
-    {:in [:div.flex],
+    {:src [:div.flex],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "flex"}))}
-    {:in
+    {:src
      [:div.flex
       [:div "flex-div"]
       [:input#bar.w-full
@@ -203,19 +204,19 @@
        (hyperfiddle.electric-dom3/props {:type :Submit, :class "btn"})
        (hyperfiddle.electric-dom3/text "Update")
        (dom/on "click" (e/fn [_e] (SetBar. (or @text ""))))))}
-    {:in [:div#my-id.my-class1.my-class2],
+    {:src [:div#my-id.my-class1.my-class2],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props
        {:class "my-class1 my-class2", :id "my-id"}))}
-    {:in [:div.my-class [:div] "Hello world" (expression)],
+    {:src [:div.my-class [:div] "Hello world" (expression)],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "my-class"})
       (hyperfiddle.electric-dom3/div)
       (hyperfiddle.electric-dom3/text "Hello world")
       (expression))}
-    {:in
+    {:src
      [:div#my-id.my-class1.my-class2
       {:class [:my-class3 :my-class4],
        :id :my-id2,
@@ -228,7 +229,7 @@
         :id :my-id2,
         :property1 :some-value,
         :property2 (expression)}))}
-    {:in
+    {:src
      [:button.text-blue-500.hover:text-blue-800
       {:type :submit}
       "Sign out"],
@@ -237,16 +238,16 @@
       (hyperfiddle.electric-dom3/props
        {:type :submit, :class "text-blue-500 hover:text-blue-800"})
       (hyperfiddle.electric-dom3/text "Sign out"))}
-    {:in [:div {:class :my-class.my-class2}],
+    {:src [:div {:class :my-class.my-class2}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "my-class my-class2"}))}
-    {:in [:div {:class (str "a" "-b")}],
+    {:src [:div {:class (str "a" "-b")}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props
        {:class (electric-hiccup.reader/seq-classes>str (str "a" "-b"))}))}
-    {:in [:div.x {:class (str "a" "-b")}],
+    {:src [:div.x {:class (str "a" "-b")}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props
@@ -255,7 +256,7 @@
          "x"
          " "
          (electric-hiccup.reader/seq-classes>str (str "a" "-b")))}))}
-    {:in [:div.class1 {:class (get-classes :my-key)}],
+    {:src [:div.class1 {:class (get-classes :my-key)}],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props
@@ -265,7 +266,7 @@
          " "
          (electric-hiccup.reader/seq-classes>str
           (get-classes :my-key)))}))}
-    {:in [:div.a {:class '(:b :c)} "list"],
+    {:src [:div.a {:class '(:b :c)} "list"],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props
@@ -275,7 +276,7 @@
          " "
          (electric-hiccup.reader/seq-classes>str '(:b :c)))})
       (hyperfiddle.electric-dom3/text "list"))}
-    {:in
+    {:src
      [:svg/svg
       {:viewBox "0 0 300 100"}
       [:svg/circle
@@ -309,9 +310,9 @@
          :width (+ 60 offset),
          :height (+ 60 offset),
          :style {:fill "#45b39d"}})))}
-    {:in [:div (when true [:div])],
+    {:src [:div (when true [:div])],
      :out (hyperfiddle.electric-dom3/div (when true [:div]))}
-    {:in [:div#id.c1.c2 "Hello" [:div [:div "inner"]]],
+    {:src [:div#id.c1.c2 "Hello" [:div [:div "inner"]]],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2", :id "id"})
@@ -319,46 +320,56 @@
       (hyperfiddle.electric-dom3/div
        (hyperfiddle.electric-dom3/div
         (hyperfiddle.electric-dom3/text "inner"))))}
-    {:in [:div#id.c1.c2 "Hello" [:div [:div (dom/text "text")]]],
+    {:src [:div#id.c1.c2 "Hello" [:div [:div (dom/text "text")]]],
      :out
      (hyperfiddle.electric-dom3/div
       (hyperfiddle.electric-dom3/props {:class "c1 c2", :id "id"})
       (hyperfiddle.electric-dom3/text "Hello")
       (hyperfiddle.electric-dom3/div
        (hyperfiddle.electric-dom3/div (dom/text "text"))))}
-    {:in [:div.c#id],
+    {:src [:div.c#id],
      :out "Assert failed: Invalid hiccup tag-form: :div.c#id\nvalid"}
-    {:in (str), :out "Assert failed: (vector? hiccup)"}
-    {:in [:DIV#Id.c1.C2 "Hello" [:div]],
+    {:src (str), :out "Assert failed: (vector? hiccup)"}
+    {:src [:DIV#Id.c1.C2 "Hello" [:div]],
      :out
      (hyperfiddle.electric-dom3/DIV
       (hyperfiddle.electric-dom3/props {:class "c1 C2", :id "Id"})
       (hyperfiddle.electric-dom3/text "Hello")
       (hyperfiddle.electric-dom3/div))}
-    {:in [:div..c],
+    {:src [:div..c],
      :out "Assert failed: Invalid hiccup tag-form: :div..c\nvalid"}
-    {:in [:..], :out "Assert failed: Invalid hiccup tag-form: :..\nvalid"}
-    {:in [:div#id..c],
+    {:src [:..], :out "Assert failed: Invalid hiccup tag-form: :..\nvalid"}
+    {:src [:div#id..c],
      :out "Assert failed: Invalid hiccup tag-form: :div#id..c\nvalid"}
-    {:in [:div##id],
+    {:src [:div##id],
      :out "Assert failed: Invalid hiccup tag-form: :div##id\nvalid"}
-    {:in [], :out "Assert failed: (keyword? tag-form)"}
-    {:in ["div"], :out "Assert failed: (keyword? tag-form)"}
-    {:in ['div], :out "Assert failed: (keyword? tag-form)"}])
+    {:src [], :out "Assert failed: (keyword? tag-form)"}
+    {:src ["div"], :out "Assert failed: (keyword? tag-form)"}
+    {:src ['div], :out "Assert failed: (keyword? tag-form)"}])
 
-(defn record []
+(defn record
+  "Print the supplied src hiccup data forms with the corresponding generated electric code.
+   Save this as the recorded data for the regression tests."
+  [tests]
   (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
-    (pprint (mapv (fn [v] {:in v :out (expand v)}) tests))))
+    (pprint (mapv (fn [v] {:src v :out (expand v)}) tests))))
 
-(defn test []
+(defn test 
+  "Verify the recorded electric code with the regenerated electric code for the corresponding
+   src test cases."
+  [recorded]
   (binding [electric-hiccup.reader/*electric-dom-pkg* 'hyperfiddle.electric-dom3]
     (pprint
-     (map (fn [{:keys [in out]}]
-            (let [r (expand in)]
+     (map (fn [{:keys [src out]}]
+            (let [r (expand src)]
               (if (= out r)
                 "Pass"
-                {:result "Fail" :in in :ref out :out r}))) recorded))))
+                {:result "Fail" :src src :ref out :out r}))) recorded))))
 
 ;(pprint (expand '[:div.c1#id]))
-;(record)
-(test)
+
+;run with babashka:
+;> bb test.clj
+;
+;(record tests) ;re-record to capture new test cases or changes.
+(test recorded)
