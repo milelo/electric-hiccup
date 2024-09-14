@@ -36,7 +36,7 @@ Optionally override the `hyperfiddle.electric-dom2` electric dom namespace using
   )
 ```
 
-### Other namespaces
+#### [Other namespaces](#Other namespaces)
 
 The default namespace can be overridden by namespacing the electric-hiccup tag-form keywords. For example if you `require` `[hyperfiddle.electric-dom2 :as dom]` you can use the tag `[:dom/div.h1 "Foo"]` explicitly making use of `hyperfiddle.electric-dom2/div`.
 
@@ -126,6 +126,10 @@ This source is from a fork of [biff-electric] modified to use `electric-hiccup`:
      "This demonstrates updating a value with Electric."]])
 ```
 
+## Further examples
+
+* [electric-multi-client-app] - A minimal Electric Clojure app based on Electric Starter App providing a server with multiple independent clients, routing and an XTDB-in-a-box database. Each client has its own dependencies and electric reactor. This uses `electric-hiccup` with [tailwindcss] and [DaisyUI].
+
 ## `electric-hiccup` syntax
 
 `electric-hiccup` is loosely based on [hiccup].
@@ -133,12 +137,25 @@ This source is from a fork of [biff-electric] modified to use `electric-hiccup`:
 #### HTML tags (supported by `hyperfiddle.electric-dom2`) are represented by a keyword at the start of a vector
 
 ```clojure
-#electric-hiccup [:div]
+#electric-hiccup
+[:div]
 ```
 The keyword-name is prefixed. During compilation this expands to:
 
 ```clojure 
 (hyperfiddle.electric-dom2/div)
+```
+
+Or `:require` another namespace `[hyperfiddle.electric-svg :as s]` to explicitly namespace the tag with its alias:
+
+```clojure
+#electric-hiccup
+[:s/svg]
+```
+The alias is prefixed. During compilation this expands to:
+
+```clojure 
+(s/svg)
 ```
 
 #### ID and class-shortcuts
@@ -294,6 +311,9 @@ You can however define an alternative short-form name for your project:
 * The `ehic` entry defines the tag `#ehic`
 * Don't forget, in order to use the tags, require [hyperfiddle.electric-dom2] and [electric-hiccup.reader].
 
+[electric-multi-client-app]: https://github.com/milelo/electric-multi-client-app
+[tailwindcss]: https://tailwindcss.com/
+[daisyUI]: https://daisyui.com/
 [biff-electric]: https://github.com/jacobobryant/biff-electric
 [biff-electric-hiccup]: https://github.com/milelo/biff-electric-hiccup
 [app.cljc]: https://github.com/jacobobryant/biff-electric/blob/master/src/com/biffweb/examples/electric/app.cljc
